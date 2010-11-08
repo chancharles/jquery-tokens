@@ -11,21 +11,30 @@ Simply include the plugin js file.
 Sample usage
 ------------
 
-  $(".tokens").tokens({ initialTokens: [{label: 'C++', value: 'cpp'}, {label: 'JSP', value: 'jsp'}],
-                            tokensAdded: function(items) {
-								for (var i = 0; i < items.length; i++) {
-									var item = items[i];
-									var html = $("#message").html();
-									$("#message").html(html + "<br/>Item added: " + item.value);
-								}
-							},
-                            tokensRemoved: function(items) {
-								for (var i = 0; i < items.length; i++) {
-									var item = items[i];
-									var html = $("#message").html();
-									$("#message").html(html + "<br/>Item removed: " + item.value);
-								}
-							}
-	});
+    // initialize the token container with two tokens.
+    $(".tokens").tokens({ 
+        initialTokens: [{label: 'C++', value: 'cpp'}, {label: 'JSP', value: 'jsp'}]
+    });
 
+    // add two new tokens
+    $(".tokens").tokens("add", [{label: 'Java', value: 'java'}, {label: 'PHP', value: 'php'}]);
 
+    // remove two tokens
+    $(".tokens").tokens("remove", [{label: 'Java', value: 'java'}, {label: 'C++', value: 'cpp'}]);
+    
+    // or equivalently, just provide the value
+    $(".tokens").tokens("remove", ['java', 'cpp']);
+
+    // select a token
+    $(".tokens").tokens("select", [{label: 'C++', value: 'cpp'}]);
+
+    // or equivalently, just provide the value
+    $(".tokens").tokens("select", ['cpp']);
+
+    // retrieve list of items from the token container
+    var items = $(".tokens").tokens("items");
+
+    // retrieve only item values from the token container
+    var values = $(".tokens").tokens("values");
+
+    
