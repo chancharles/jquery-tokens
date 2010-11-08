@@ -120,6 +120,14 @@
       return undefined;
     },
 
+    unselect: function() {
+      var $selector = this;
+      var pluginData = $selector.data(constants.dataKey);
+      var settings = pluginData.settings;
+      var $tokens = $("." + settings.classes.token, $selector);
+      $tokens.removeClass(constants.selectedClass);
+    },
+
     select : function(item) {
       var $selector = this;
       var pluginData = $selector.data(constants.dataKey);
