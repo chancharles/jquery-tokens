@@ -1,6 +1,8 @@
 /*
  * jQuery Plugin: Tokens
  * Version 1.0
+ *
+ * https://github.com/chancharles/jquery-tokens
  */
 (function($) {
 
