@@ -262,6 +262,6 @@
       $.error('Method ' + method + ' does not exist on jQuery.tokens');
     }
     return $selector;
-  }
+  };
 
 })(jQuery);
