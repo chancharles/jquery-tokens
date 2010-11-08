@@ -5,9 +5,8 @@
   border: 1px solid #CCD5E4;
   border-radius: 3px;
   -webkit-border-radius: 3px;
-  margin-right: 1px;
-  padding-left: 2px;
-  padding-right: 2px;
+  margin: 1px;
+  padding: 1px;
   white-space: nowrap;
 }
 
