@@ -1,4 +1,4 @@
-﻿/*
+/*
  * jQuery Plugin: Tokens
  * Version 1.0
  */
@@ -244,3 +244,4 @@
   }
 
 })(jQuery);
+
