@@ -58,7 +58,12 @@
         tokensRemoved : function(items) {
         },
 
-        initialTokens : []
+        tokensSorted: function() {
+        },
+
+        initialTokens : [],
+
+        sortable: false
       };
 
       // If options exist, lets merge them with our default settings
@@ -95,6 +100,25 @@
        */
       if (settings.initialTokens.length > 0) {
         methods.add.apply($selector, [ settings.initialTokens ]);
+      }
+
+      if (settings.sortable) {
+        $selector.sortable({
+          items: "." + settings.classes.token,
+          update: function(event, ui) {
+            var pluginData = $selector.data(constants.dataKey);
+            var settings = pluginData.settings;
+            var $tokens = $("." + settings.classes.token, $selector);
+            var items = [];
+            for ( var i = 0; i < $tokens.length; i++) {
+              var $token = $($tokens[i]);
+              var item = $token.data(constants.tokenDataKey);
+              items.push(item);
+            }
+            pluginData.items = items;
+            settings.tokensSorted();
+          }
+        });
       }
       return $selector;
     },
