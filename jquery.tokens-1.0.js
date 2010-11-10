@@ -52,18 +52,9 @@
           return html;
         },
 
-        tokensAdded : function(items) {
-        },
-
-        tokensRemoved : function(items) {
-        },
-
-        tokensSorted: function() {
-        },
-
         initialTokens : [],
 
-        sortable: false
+        sortable : false
       };
 
       // If options exist, lets merge them with our default settings
@@ -78,8 +69,8 @@
       /**
        * Setup live events for the remove token button.
        */
-      $("." + settings.classes.removeToken, $selector).live('click',
-          function() {
+      $("." + settings.classes.removeToken, $selector).die('click').live(
+          'click', function() {
             var $token = $(this).parent("." + settings.classes.token);
             var data = $token.data(constants.tokenDataKey);
             methods.remove.apply($selector, [ [ data ] ]);
@@ -89,11 +80,22 @@
       /**
        * Setup live events for click on tokens.
        */
-      $("." + settings.classes.token, $selector).live('click', function() {
-        var item = $(this).data(constants.tokenDataKey);
-        methods.select.apply($selector, [ item ]);
-        return false;
-      });
+      $("." + settings.classes.token, $selector).die('click').live('click',
+          function() {
+            var item = $(this).data(constants.tokenDataKey);
+            methods.select.apply($selector, [ item ]);
+            return false;
+          });
+
+      if (settings.tokensAdded) {
+        $selector.bind("tokensadded.tokens", settings.tokensAdded);
+      }
+      if (settings.tokensRemoved) {
+        $selector.bind("tokensremoved.tokens", settings.tokensRemoved);
+      }
+      if (settings.tokensSorted) {
+        $selector.bind("tokenssorted.tokens", settings.tokensSorted);
+      }
 
       /**
        * Initialize the token list with the given items.
@@ -103,9 +105,9 @@
       }
 
       if (settings.sortable) {
-        $selector.sortable({
-          items: "." + settings.classes.token,
-          update: function(event, ui) {
+        $selector.sortable( {
+          items : "." + settings.classes.token,
+          update : function(event, ui) {
             var pluginData = $selector.data(constants.dataKey);
             var settings = pluginData.settings;
             var $tokens = $("." + settings.classes.token, $selector);
@@ -116,7 +118,8 @@
               items.push(item);
             }
             pluginData.items = items;
-            settings.tokensSorted();
+            var event = jQuery.Event("tokenssorted.tokens");
+            $selector.trigger(event);
           }
         });
       }
@@ -124,6 +127,8 @@
     },
 
     destroy : function(settings) {
+      var $selector = this;
+      $selector.unbind('.tokens');
     },
 
     /**
@@ -144,7 +149,7 @@
       return undefined;
     },
 
-    unselect: function() {
+    unselect : function() {
       var $selector = this;
       var pluginData = $selector.data(constants.dataKey);
       var settings = pluginData.settings;
@@ -185,7 +190,10 @@
       /**
        * Invoke callback
        */
-      settings.tokensAdded(items);
+      var event = jQuery.Event("tokensadded.tokens");
+      event.items = items;
+      $selector.trigger(event);
+
       return $selector.each(function() {
         var $container = $(this);
         for ( var i = 0; i < items.length; i++) {
@@ -242,7 +250,9 @@
       /**
        * Invoke callback
        */
-      settings.tokensRemoved(removedItems);
+      var event = jQuery.Event("tokensremoved.tokens");
+      event.items = removedItems;
+      $selector.trigger(event);
 
       $selector.each(function() {
         var $container = $(this);
